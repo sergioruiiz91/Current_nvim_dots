@@ -5,6 +5,15 @@ return {
 		event = "InsertEnter",
 
 		opts = {
+			should_attach = function(bufnr, _)
+				if not vim.api.nvim_buf_is_valid(bufnr) then
+					return false
+				end
+
+				-- nvjup notebooks use buftype=acwrite; terminal and prompt
+				-- buffers are not editable source buffers.
+				return vim.bo[bufnr].buftype == "" or vim.bo[bufnr].buftype == "acwrite"
+			end,
 			suggestion = {
 				enabled = false,
 				auto_trigger = false,
@@ -38,13 +47,13 @@ return {
 			})
 
 			vim.keymap.set("n", "<leader>ñt", function()
-				if vim.b.copilot_enabled == false then
-					vim.cmd("Copilot enable")
-					vim.notify("Copilot: ENABLED")
-				else
-					vim.cmd("Copilot disable")
-					vim.notify("Copilot: DISABLED")
-				end
+				local copilot = require("copilot.command")
+				copilot.toggle()
+
+				vim.schedule(function()
+					local attached = #vim.lsp.get_clients({ bufnr = 0, name = "copilot" }) > 0
+					vim.notify("Copilot: " .. (attached and "ENABLED" or "DISABLED"))
+				end)
 			end, {
 				desc = "Copilot: Toggle",
 			})
