@@ -23,6 +23,7 @@ return {
         ["<C-j>"] = { "select_next", "fallback" },
         ["<C-d>"] = { "scroll_documentation_up", "fallback" },
         ["<C-f>"] = { "scroll_documentation_down", "fallback" },
+        ["<C-Space>"] = { "show", "fallback" },
 
         -- Acepta solo si has seleccionado una opción; de lo contrario hace salto de línea normal
         ["<CR>"] = { "accept", "fallback" },

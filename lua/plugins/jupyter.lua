@@ -4,8 +4,11 @@
 -- { modo, lhs, comando, descripción }
 local maps = {
   -- ── Celdas (<leader>c) ──────────────────────────────────────────
-  { "n", "<leader>ck", "NvJupCellInsertAbove", "Insertar celda arriba" },
+  { "n", "<leader>ce", "NvJupCellInsertAbove", "Insertar celda arriba" },
+  { "n", "<leader>cb", "NvJupCellInsertBelow", "Insertar celda abajo" },
   { "n", "<leader>cj", "NvJupCellInsertBelow", "Insertar celda abajo" },
+  -- movilidad entre chuncks
+
   { "n", "<leader>cd", "NvJupCellDelete", "Eliminar celda" },
   { "n", "<leader>cy", "NvJupCellDuplicate", "Duplicar celda" },
   { "n", "<leader>cs", "NvJupCellSplit", "Dividir celda en el cursor" },
@@ -23,8 +26,8 @@ local maps = {
   { "n", "<leader>cv", "NvJupCellToggleOutput", "Mostrar/ocultar output de la celda" },
   { "n", "<leader>cp", "NvJupOutputOpen", "Abrir output completo" },
   -- Navegación (desactivada en el plugin, la hago yo)
-  { "n", "]c", "NvJupCellNext", "Celda siguiente" },
-  { "n", "[c", "NvJupCellPrevious", "Celda anterior" },
+  { "n", "<leader>cj", "NvJupCellNext", "Celda siguiente" },
+  { "n", "<leader>ck", "NvJupCellPrevious", "Celda anterior" },
 
   -- ── Ejecución (<leader>r / <leader>R) ───────────────────────────
   { "n", "<leader>rc", "NvJupRunCurrent", "Ejecutar celda actual" },
@@ -50,6 +53,25 @@ local maps = {
   { "n", "<leader>kd", "NvJupRemoteDisconnect", "Desconectar remoto" },
 }
 
+local function references_with_telescope()
+  vim.fn.setqflist({}, "r")
+  vim.cmd("NvJupLspReferences")
+
+  local attempts = 0
+  local function open_picker()
+    attempts = attempts + 1
+    local items = vim.fn.getqflist({ items = 1 }).items
+    if #items > 0 then
+      pcall(vim.cmd, "cclose")
+      require("telescope.builtin").quickfix()
+    elseif attempts < 40 then
+      vim.defer_fn(open_picker, 50)
+    end
+  end
+
+  vim.defer_fn(open_picker, 50)
+end
+
 local function attach(buf)
   if vim.b[buf].nvjup_user_maps then
     return
@@ -63,6 +85,20 @@ local function attach(buf)
       desc = m[4],
     })
   end
+
+  vim.keymap.set("n", "grr", references_with_telescope, {
+    buffer = buf,
+    silent = true,
+    desc = "LSP: referencias (Telescope)",
+  })
+
+  vim.keymap.set("i", "<C-Space>", function()
+    require("nvjup.lsp").completion()
+  end, {
+    buffer = buf,
+    silent = true,
+    desc = "Completar con LSP de nvjup",
+  })
 
   -- Nombres de grupo en which-key (solo en este buffer)
   local ok, wk = pcall(require, "which-key")
