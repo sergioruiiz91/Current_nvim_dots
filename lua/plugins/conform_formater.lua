@@ -1,11 +1,9 @@
 return {
   "stevearc/conform.nvim",
-  event = { "BufWritePre" },
   cmd = { "ConformInfo" },
   keys = {
     {
-      -- Nota: Cambiado a <leader>cf ([C]ode [F]ormat o mantén <leader>ff si prefieres)
-      "<leader>ff",
+      "<leader>cf",
       function()
         require("conform").format({ async = true })
       end,
@@ -15,20 +13,8 @@ return {
   },
   opts = {
     notify_on_error = false,
-    format_on_save = function(bufnr)
-      -- Activa el autoformato al guardar para tus lenguajes principales si lo deseas
-      local enabled_filetypes = {
-        lua = true,
-        python = true,
-        rust = true,
-        sh = true,
-        bash = true,
-      }
-      if enabled_filetypes[vim.bo[bufnr].filetype] then
-        return { timeout_ms = 500 }
-      end
-      return nil
-    end,
+    format_on_save = false,
+    format_after_save = false,
     default_format_opts = {
       lsp_format = "fallback",
     },

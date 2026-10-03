@@ -125,6 +125,10 @@ return {
   },
   config = function()
     require("nvjup").setup({
+      formatting = {
+        enabled = false,
+        on_save = false,
+      },
       lsp = {
         enabled = true,
         auto_start = true,
