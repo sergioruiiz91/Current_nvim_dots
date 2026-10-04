@@ -5,13 +5,17 @@ local function markdown_fold(lnum)
     return ">" .. #level
   end
 
-  local previous = vim.fn.prevnonblank(lnum - 1)
-  if previous == 0 then
-    return 0
+  local previous = lnum - 1
+  while previous > 0 do
+    local previous_line = vim.fn.getline(previous)
+    local previous_level = previous_line:match("^%s*(#+)%s+")
+    if previous_level then
+      return #previous_level
+    end
+    previous = previous - 1
   end
 
-  local previous_level = vim.fn.getline(previous):match("^%s*(#+)%s+")
-  return previous_level and #previous_level or 0
+  return 0
 end
 
 local function nvjup_fold(lnum)
