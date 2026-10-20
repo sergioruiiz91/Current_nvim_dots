@@ -1,17 +1,13 @@
 return {
-	"sphamba/smear-cursor.nvim",
-	event = "VeryLazy",
-	opts = {
-		-- Suavizado y estela entre líneas y movimientos
-		smear_between_buffers = true,
-		smear_between_neighbor_lines = true,
-		scroll_buffer_space = true,
-		smear_insert_mode = true,
-
-		-- Velocidad de refresco (baja los milisegundos si notas lag)
-		time_interval = 14,
-
-		-- Ajusta la "elasticidad" de la estela (más bajo = más rebote)
-		damping = 0.85,
-	},
+  "sphamba/smear-cursor.nvim",
+  event = "VeryLazy",
+  opts = { -- Default  Range
+    stiffness = 0.8, -- 0.6      [0, 1]
+    trailing_stiffness = 0.6, -- 0.45     [0, 1]
+    stiffness_insert_mode = 0.7, -- 0.5      [0, 1]
+    trailing_stiffness_insert_mode = 0.7, -- 0.5      [0, 1]
+    damping = 0.95, -- 0.85     [0, 1]
+    damping_insert_mode = 0.95, -- 0.9      [0, 1]
+    distance_stop_animating = 0.5, -- 0.1      > 0
+  },
 }

@@ -5,7 +5,7 @@ return {
     version = "*",
     dependencies = {
       "L3MON4D3/LuaSnip",
-      "saghen/blink.compat", -- Necesario para cargar fuentes de nvim-cmp (nvjup, cmp-latex-symbols...)
+      "saghen/blink.compat", -- Necesario para cargar fuentes compatibles con blink.cmp
       "rafamadriz/friendly-snippets",
       "giuxtaposition/blink-cmp-copilot",
       "erooke/blink-cmp-latex", -- Completado de comandos LaTeX para blink.cmp
@@ -19,12 +19,12 @@ return {
       -- Mapeos de teclado
       keymap = {
         preset = "none",
-        ["<C-k>"] = { "select_prev", "fallback" },
-        ["<C-j>"] = { "select_next", "fallback" },
+        ["<C-p>"] = { "select_prev", "fallback" },
+        ["<C-n>"] = { "select_next", "fallback" },
         ["<C-d>"] = { "scroll_documentation_up", "fallback" },
         ["<C-f>"] = { "scroll_documentation_down", "fallback" },
-        ["<C-Space>"] = { "show", "fallback" },
-
+        -- Solicita sugerencias manualmente sin insertar nada.
+        ["<C-space>"] = { "show", "fallback" },
         -- Acepta solo si has seleccionado una opción; de lo contrario hace salto de línea normal
         ["<CR>"] = { "accept", "fallback" },
       },
@@ -74,12 +74,6 @@ return {
           "latex",
         },
 
-        -- En notebooks de nvjup (filetype "nvjup") añade la fuente de nvjup
-        -- además de las de arriba
-        per_filetype = {
-          nvjup = { inherit_defaults = true, "nvjup" },
-        },
-
         providers = {
           copilot = {
             name = "copilot",
@@ -98,24 +92,15 @@ return {
               insert_command = true,
             },
 
-            -- Solo activar en Markdown, Quarto, R Markdown y notebooks
+            -- Solo activar en Markdown, Quarto y R Markdown
             enabled = function()
               return vim.tbl_contains({
                 "markdown",
                 "quarto",
                 "rmd",
                 "rmarkdown",
-                "ipynb",
-                "nvjup",
               }, vim.bo.filetype)
             end,
-          },
-
-          -- Fuente de nvim-cmp de nvjup, vía blink.compat
-          nvjup = {
-            name = "nvjup", -- debe coincidir con el nombre de la fuente registrada en cmp
-            module = "blink.compat.source",
-            score_offset = 50, -- por debajo de copilot
           },
         },
       },

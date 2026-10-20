@@ -10,9 +10,8 @@ return {
 					return false
 				end
 
-				-- nvjup notebooks use buftype=acwrite; terminal and prompt
-				-- buffers are not editable source buffers.
-				return vim.bo[bufnr].buftype == "" or vim.bo[bufnr].buftype == "acwrite"
+				-- Terminal and prompt buffers are not editable source buffers.
+				return vim.bo[bufnr].buftype == ""
 			end,
 			suggestion = {
 				enabled = false,
@@ -37,26 +36,6 @@ return {
 
 		config = function(_, opts)
 			require("copilot").setup(opts)
-
-			vim.keymap.set("n", "<leader>ña", "<cmd>Copilot auth<cr>", {
-				desc = "Copilot: Authenticate",
-			})
-
-			vim.keymap.set("n", "<leader>ñs", "<cmd>Copilot status<cr>", {
-				desc = "Copilot: Status",
-			})
-
-			vim.keymap.set("n", "<leader>ñt", function()
-				local copilot = require("copilot.command")
-				copilot.toggle()
-
-				vim.schedule(function()
-					local attached = #vim.lsp.get_clients({ bufnr = 0, name = "copilot" }) > 0
-					vim.notify("Copilot: " .. (attached and "ENABLED" or "DISABLED"))
-				end)
-			end, {
-				desc = "Copilot: Toggle",
-			})
 		end,
 	},
 }

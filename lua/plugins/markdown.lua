@@ -1,14 +1,14 @@
 return {
 	"MeanderingProgrammer/render-markdown.nvim",
-	ft = { "markdown", "rmd", "quarto", "ipynb" },
+	ft = { "markdown", "rmd", "quarto" },
 	dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
 	opts = {
-		file_types = { "markdown", "rmd", "quarto", "ipynb" },
+		file_types = { "markdown", "rmd", "quarto" },
 		completions = {
-			blink = { enabled = false }, -- Desactivado al usar nvim-cmp
+			blink = { enabled = false },
 		},
 		latex = {
-			enabled = false, -- Desactivado para no chocar con mdmath/image
+			enabled = false, -- Desactivado para no chocar con image.nvim
 		},
 		html = {
 			enabled = true,
@@ -22,10 +22,5 @@ return {
 	},
 	config = function(_, opts)
 		require("render-markdown").setup(opts)
-
-		-- Atajo para alternar el renderizado
-		vim.keymap.set("n", "<leader>um", function()
-			require("render-markdown").toggle()
-		end, { desc = "Toggle Render Markdown" })
 	end,
 }

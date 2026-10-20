@@ -2,26 +2,6 @@ return {
   "stevearc/oil.nvim",
   dependencies = { "nvim-tree/nvim-web-devicons" },
   cmd = "Oil",
-  keys = {
-    { "<leader>oe", "<CMD>Oil<CR>", desc = "Open Oil (parent dir)" },
-    { "<leader>oo", "<CMD>Oil --float<CR>", desc = "Open Oil (floating)" },
-    {
-      "<leader>-",
-      function()
-        local oil = require("oil")
-        local current_buf = vim.api.nvim_get_current_buf()
-        local current_file = vim.api.nvim_buf_get_name(current_buf)
-
-        if current_file and current_file ~= "" then
-          local dir = vim.fn.fnamemodify(current_file, ":h")
-          oil.open(dir)
-        else
-          oil.open()
-        end
-      end,
-      desc = "Open Oil in current file's directory",
-    },
-  },
   init = function()
     -- Autocmds específicos para los buffers de Oil
     vim.api.nvim_create_autocmd("FileType", {

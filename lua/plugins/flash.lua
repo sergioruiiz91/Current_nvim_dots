@@ -1,26 +1,42 @@
 return {
-
   "folke/flash.nvim",
   event = "VeryLazy",
+  opts = {
+    modes = {
+      char = {
+        enabled = false,
+      },
+    },
+  },
   keys = {
     {
-      "s",
-      mode = { "n", "x", "o" },
+      "<leader>ms",
+      mode = "n",
       function()
-        require("flash").jump()
+        require("flash").jump({
+          search = {
+            mode = "exact",
+            max_length = 2,
+          },
+        })
       end,
-      desc = "Flash Jump",
+      desc = "Flash: saltar usando dos caracteres",
     },
     {
-      "S",
-      mode = { "n", "x", "o" },
+      "<leader>mf",
+      mode = "n",
       function()
-        require("flash").treesitter()
+        require("flash").jump({
+          search = {
+            mode = "exact",
+            max_length = 1,
+          },
+        })
       end,
-      desc = "Flash Treesitter",
+      desc = "Flash: saltar a un carácter",
     },
     {
-      "<leader>l",
+      "<leader>ml",
       mode = "n",
       function()
         require("flash").jump({
@@ -34,7 +50,21 @@ return {
           pattern = "^",
         })
       end,
-      desc = "Flash Line",
+      desc = "Flash: saltar a una línea",
+    },
+    {
+      "<leader>mw",
+      mode = "n",
+      function()
+        require("flash").jump({
+          search = {
+            mode = "search",
+            max_length = 0,
+          },
+          pattern = "\\<\\k",
+        })
+      end,
+      desc = "Flash: saltar a una palabra",
     },
   },
 }

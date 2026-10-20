@@ -22,10 +22,5 @@ return {
 	},
 	config = function(_, opts)
 		require("snacks").setup(opts)
-
-		-- Atajos de teclado recomendados para LazyGit
-		vim.keymap.set("n", "<leader>gg", function()
-			Snacks.lazygit()
-		end, { desc = "Git: Open LazyGit" })
 	end,
 }

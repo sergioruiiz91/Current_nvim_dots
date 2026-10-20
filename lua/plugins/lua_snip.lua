@@ -29,9 +29,6 @@ return {
 			-- R Markdown
 			ls.add_snippets("rmd", obsidian)
 
-			-- NvJup usa un filetype compuesto para notebooks y cambia de
-			-- lenguaje por celda, por lo que los snippets viven en ese buffer.
-			ls.add_snippets("nvjup", obsidian)
 		end,
 	},
 }

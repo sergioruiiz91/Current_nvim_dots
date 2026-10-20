@@ -9,7 +9,4 @@ return {
 	opts = {
 		notify_user_on_venv_activation = true,
 	},
-	keys = {
-		{ "<leader>vs", "<cmd>VenvSelect<CR>", desc = "[V]irtualenv [S]elect" },
-	},
 }
